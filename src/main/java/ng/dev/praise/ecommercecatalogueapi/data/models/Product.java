@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ng.dev.praise.ecommercecatalogueapi.data.domainobjects.Money;
 import ng.dev.praise.ecommercecatalogueapi.data.enums.Category;
 import ng.dev.praise.ecommercecatalogueapi.data.enums.ProductStatus;
+
+import java.math.BigDecimal;
+
 @Entity
 @Data
 @Builder
@@ -30,7 +32,7 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private Money price;
+    private BigDecimal price;
 
     private Category category;
 

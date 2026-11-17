@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ng.dev.praise.ecommercecatalogueapi.data.domainobjects.Money;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class Order {
     private List<OrderItem> items = new ArrayList<>();
 
     @Column(nullable = false)
-    private Money price;
+    private BigDecimal price;
 
 
     private LocalDateTime createdAt = LocalDateTime.now();

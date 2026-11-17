@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ng.dev.praise.ecommercecatalogueapi.data.domainobjects.Money;
+
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -26,7 +27,7 @@ public class OrderItem {
     private int quantity;
 
     @Column(nullable = false)
-    private Money price;
+    private BigDecimal price;
 
 
 }
