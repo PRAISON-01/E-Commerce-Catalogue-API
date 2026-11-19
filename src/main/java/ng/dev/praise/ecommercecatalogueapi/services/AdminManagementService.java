@@ -8,9 +8,10 @@ import ng.dev.praise.ecommercecatalogueapi.dtos.request.ProcessAdminStatusReques
 import ng.dev.praise.ecommercecatalogueapi.dtos.responses.ProcessAdminStatusResponse;
 import ng.dev.praise.ecommercecatalogueapi.exceptions.AdminProcessingException;
 import ng.dev.praise.ecommercecatalogueapi.exceptions.AuthException;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-
+@Service
 public class AdminManagementService {
     private UserRepository userRepository;
 
@@ -18,7 +19,7 @@ public class AdminManagementService {
         this.userRepository = userRepository;
     }
 
-    ProcessAdminStatusResponse processAdminStatus(ProcessAdminStatusRequest request) throws AuthException {
+    public ProcessAdminStatusResponse processAdminStatus(ProcessAdminStatusRequest request) throws AuthException {
 
         User admin = userRepository.findById(request.getAdminId())
                 .orElseThrow(() -> new AuthException("Admin account not found with ID: " + request.getAdminId()));

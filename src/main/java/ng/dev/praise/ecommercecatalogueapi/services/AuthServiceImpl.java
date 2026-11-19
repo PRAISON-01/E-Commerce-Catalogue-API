@@ -11,9 +11,9 @@ import ng.dev.praise.ecommercecatalogueapi.exceptions.AuthException;
 import ng.dev.praise.ecommercecatalogueapi.exceptions.InvalidPasswordException;
 import ng.dev.praise.ecommercecatalogueapi.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+@Service
 public class AuthServiceImpl implements AuthService{
     private final UserRepository userRepository;
 
@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService{
        if(userRepository.existsByEmail(registerRequest.getEmail())) throw new AuthException("Email address is already exist!");
        User user = User.builder()
                 .firstName(registerRequest.getFirstName())
-                .secondName(registerRequest.getLastName())
+                .lastName(registerRequest.getLastName())
                 .email(registerRequest.getEmail())
                 .phoneNumber(registerRequest.getPhoneNumber())
                 .status(Status.ACTIVE)
@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService{
 
         User user = User.builder()
                 .firstName(request.getFirstName())
-                .secondName(request.getLastName())
+                .lastName(request.getLastName())
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
                 .status(Status.PENDING)
@@ -103,6 +103,7 @@ public class AuthServiceImpl implements AuthService{
                 .id(user.getId())
                 .token(jwtStringToken)
                 .email(user.getEmail())
+                .status(user.getStatus())
                 .role(user.getRole())
                 .build();
     }
