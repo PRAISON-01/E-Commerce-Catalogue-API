@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import ng.dev.praise.ecommercecatalogueapi.data.models.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -16,10 +17,15 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private final String SECRET_STRING = "your-super-secret-hex-signing-key-must-be-at-least-256-bits-long-praise-dev-2026";
-    private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET_STRING.getBytes(StandardCharsets.UTF_8));
+    @Value("${app.jwt.secret}")
+    private String secretString;
 
-    private final long EXPIRATION_TIME_MS = 86400000;
+    @Value("${app.jwt.expiration-ms}")
+    private long expirationTimeMs;
+
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(secretString.getBytes(StandardCharsets.UTF_8));
+    }
 
     public String generateToken(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
@@ -31,8 +37,8 @@ public class JwtService {
                 .claims(extraClaims)
                 .subject(user.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_MS))
-                .signWith(SECRET_KEY)
+                .expiration(new Date(System.currentTimeMillis() + expirationTimeMs))
+                .signWith(getSigningKey())
                 .compact();
     }
 
@@ -60,7 +66,7 @@ public class JwtService {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .verifyWith(SECRET_KEY)
+                .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
